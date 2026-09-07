@@ -19,7 +19,7 @@ const Login = () => {
     setError("");
 
     if (!form.email || !form.password) {
-      setError("Please fill all fields");
+      setError("Please fill in all fields.");
       return;
     }
 
@@ -28,7 +28,7 @@ const Login = () => {
       await login(form.email, form.password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Invalid email or password.");
     } finally {
       setLoading(false);
     }
@@ -36,17 +36,20 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <form className="auth-card" onSubmit={handleSubmit}>
+      <form className="auth-card" onSubmit={handleSubmit} id="login-form">
         <div className="auth-logo">
           <img src={logo} alt="AstroDunia" />
         </div>
 
-        <h1>Welcome Back</h1>
-        <p className="auth-subtitle">Sign in to your trading account</p>
+        <h1>Login</h1>
+        <p className="auth-subtitle">
+          Enter your details to access your account
+        </p>
 
         <div className="form-group">
-          <label>Email</label>
+          <label htmlFor="login-email">Email Address</label>
           <input
+            id="login-email"
             type="email"
             name="email"
             placeholder="you@example.com"
@@ -57,26 +60,37 @@ const Login = () => {
         </div>
 
         <div className="form-group">
-          <label>Password</label>
+          <label htmlFor="login-password">Password</label>
           <input
+            id="login-password"
             type="password"
             name="password"
-            placeholder="••••••••"
+            placeholder="Enter your password"
             value={form.password}
             onChange={handleChange}
             autoComplete="current-password"
           />
         </div>
 
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div className="error" role="alert" style={{ marginBottom: '16px', color: 'var(--red)', background: 'var(--red-light)', border: '1px solid var(--red)', padding: '12px', borderRadius: '4px', fontSize: '13px', textAlign: 'left' }}>
+            {error}
+          </div>
+        )}
 
-        <button type="submit" className="primary-btn" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
+        <button
+          type="submit"
+          className="primary-btn"
+          style={{ width: '100%', marginBottom: '16px' }}
+          disabled={loading}
+          id="login-submit-btn"
+        >
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="auth-footer">
-          Don't have an account?{" "}
-          <Link to="/register">Create one</Link>
+          Don&apos;t have an account?{" "}
+          <Link to="/register">Register now</Link>
         </p>
       </form>
     </div>
